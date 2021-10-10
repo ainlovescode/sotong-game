@@ -1,19 +1,10 @@
-"""
-GlassBridgeGameSim calculates the probability of player survival
-by running simulations of players moving across the bridge, with
-randomised survival paths.
-
-Default should be 16 players, 18 steps with 1000 sim iterations.
-
-
-"""
 import random
 
 
 class GlassBridgeGameSim:
     def __init__(self, num_of_players=16,
                  num_of_steps=18,
-                 num_of_itr=1000000):
+                 num_of_itr=1000):
 
         self.survivals = [0] * num_of_players
         self.num_of_steps = num_of_steps
@@ -21,7 +12,7 @@ class GlassBridgeGameSim:
 
     def run_sim(self):
         for itr in range(self.num_of_itr):
-            print("Simulating iteration ", itr)
+            print("Simulating iteration {} out of {}".format(itr, self.num_of_itr))
             stepped = [0] * self.num_of_steps
 
             for player_num in range(len(self.survivals)):
@@ -32,7 +23,7 @@ class GlassBridgeGameSim:
                         continue
                     else:
                         panel_is_broken = self.break_panel()
-                        if not panel_is_broken:
+                        if panel_is_broken:
                             player_is_alive = False
                         stepped[step] = 1
                         if not player_is_alive:

@@ -2,12 +2,11 @@ import io
 import unittest
 from unittest import mock
 
-from sotonggame.GlassBridgeGameSim import GlassBridgeGameSim
+from sotonggame.glass_bridge_game_sim.GlassBridgeGameSim import GlassBridgeGameSim
 
 
 class TestGlassBridgeGameSim(unittest.TestCase):
-
-    @mock.patch('sotonggame.GlassBridgeGameSim.GlassBridgeGameSim.break_panel')
+    @mock.patch('sotonggame.glass_bridge_game_sim.GlassBridgeGameSim.GlassBridgeGameSim.break_panel')
     def test_record_player_survival(self, mock_break_panel):
         glass_bridge_game_sim = GlassBridgeGameSim(num_of_players=1,
                                                    num_of_steps=1,
@@ -20,7 +19,7 @@ class TestGlassBridgeGameSim(unittest.TestCase):
         mock_break_panel.assert_called()
         self.assertEqual(glass_bridge_game_sim.survivals[0], 1)
 
-    @mock.patch('sotonggame.GlassBridgeGameSim.GlassBridgeGameSim.break_panel')
+    @mock.patch('sotonggame.glass_bridge_game_sim.GlassBridgeGameSim.GlassBridgeGameSim.break_panel')
     def test_record_player_death(self, mock_break_panel):
         glass_bridge_game_sim = GlassBridgeGameSim(num_of_players=1,
                                                    num_of_steps=1,

@@ -6,17 +6,6 @@ from sotonggame.GlassBridgeGameSim import GlassBridgeGameSim
 
 
 class TestGlassBridgeGameSim(unittest.TestCase):
-    """
-    GlassBridgeGameSim calculates the probability of player survival
-    by running simulations of players moving across the bridge, with
-    randomised survival paths.
-
-    - test calculation of individual player survival given complete sim
-    - test calculation of survival for all players given complete sim
-    - test correct printing of 1
-    - test correct printing of 2
-    - test survival status given fail and pass path
-    """
 
     @mock.patch('sotonggame.GlassBridgeGameSim.GlassBridgeGameSim.break_panel')
     def test_record_player_survival(self, mock_break_panel):

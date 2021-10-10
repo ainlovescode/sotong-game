@@ -21,7 +21,7 @@ class GlassBridgeGameSim:
 
     def run_sim(self):
         for itr in range(self.num_of_itr):
-            print("Simulating iteration ", itr)
+            print("Simulating iteration #{}".format(itr))
             stepped = [0] * self.num_of_steps
 
             for player_num in range(len(self.survivals)):

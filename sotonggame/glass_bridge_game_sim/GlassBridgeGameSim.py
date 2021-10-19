@@ -19,6 +19,7 @@ class GlassBridgeGameSim:
         self.num_of_itr = num_of_itr
         self.player_memory = player_memory
         self.panels = [PanelStatus.NOT_STEPPED] * num_of_steps
+        self.chances = [0.0] * num_of_players
 
     def run_sim(self):
         for itr in range(self.num_of_itr):
@@ -49,18 +50,20 @@ class GlassBridgeGameSim:
                     self.survivals[player_num] += 1
             self.panels = [PanelStatus.NOT_STEPPED] * self.num_of_steps
 
+        self.calculate_all_player_survival()
         self.print_survival_chances()
 
     @staticmethod
     def break_panel():
         return random.randrange(0, 2)
 
-    def calculate_player_survival(self, player_num):
-        return self.survivals[player_num] / self.num_of_itr
+    def calculate_all_player_survival(self):
+        for player_num in range(len(self.survivals)):
+            self.chances[player_num] = self.survivals[player_num] / self.num_of_itr
 
     def print_survival_chances(self):
         for player_num in range(len(self.survivals)):
-            player_chances = round(100 * self.calculate_player_survival(player_num), 2)
+            player_chances = round(100 * self.chances[player_num], 2)
             print("Player {} has a {}% chance of survival.".format(player_num + 1, player_chances))
 
 

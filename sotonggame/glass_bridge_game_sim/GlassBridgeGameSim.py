@@ -38,7 +38,7 @@ class GlassBridgeGameSim:
                             self.panels[step] = PanelStatus.BROKEN
                             player_is_alive = False
                         if not player_is_alive:
-                            print("Player {} is eliminated.".format(player_num))
+                            print("Player {} is eliminated.".format(player_num + 1))
                             break
                     elif panel_status == PanelStatus.BROKEN:
                         continue
@@ -53,6 +53,10 @@ class GlassBridgeGameSim:
         self.calculate_all_player_survival()
         self.print_survival_chances()
 
+        simulation_results = self.prepare_results()
+        self.save_results(simulation_results)
+
+
     @staticmethod
     def break_panel():
         return random.randrange(0, 2)
@@ -66,7 +70,23 @@ class GlassBridgeGameSim:
             player_chances = round(100 * self.chances[player_num], 2)
             print("Player {} has a {}% chance of survival.".format(player_num + 1, player_chances))
 
+    def prepare_results(self):
+        sim_results = {
+            "num_of_players": len(self.chances),
+            "num_of_steps": self.num_of_steps,
+            "player_memory": self.player_memory,
+            "chances": self.chances
+        }
+
+        return sim_results
+
+    def save_results(self, results):
+        print("Saving results...")
+        # todo: database update
+        print("Results saved as follows: ", results)
+        pass
+
 
 if __name__ == "__main__":
-    glass_bridge_game_sim = GlassBridgeGameSim(player_memory=10)
+    glass_bridge_game_sim = GlassBridgeGameSim(player_memory=10, num_of_itr=100)
     glass_bridge_game_sim.run_sim()

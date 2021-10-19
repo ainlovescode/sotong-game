@@ -73,6 +73,41 @@ class TestGlassBridgeGameSim(unittest.TestCase):
 
         mock_break_panel.assert_called()
 
+    def test_sim_results_are_prepared(self):
+        expected_results = {
+            "num_of_players": 1,
+            "num_of_steps": 3,
+            "player_memory": 2,
+            "chances": mock.ANY
+        }
+
+        glass_bridge_game_sim = GlassBridgeGameSim(num_of_players=1,
+                                                   num_of_steps=3,
+                                                   num_of_itr=1,
+                                                   player_memory=2)
+
+        glass_bridge_game_sim.run_sim()
+
+        self.assertEqual(expected_results, glass_bridge_game_sim.prepare_results())
+
+    @mock.patch('sotonggame.glass_bridge_game_sim.GlassBridgeGameSim.GlassBridgeGameSim.save_results')
+    def test_sim_results_are_saved(self, mock_save_results):
+        t_results = {
+            "num_of_players": 1,
+            "num_of_steps": 3,
+            "player_memory": 2,
+            "chances": mock.ANY
+        }
+
+        glass_bridge_game_sim = GlassBridgeGameSim(num_of_players=1,
+                                                   num_of_steps=3,
+                                                   num_of_itr=1,
+                                                   player_memory=2)
+
+        glass_bridge_game_sim.run_sim()
+
+        mock_save_results.assert_called_with(t_results)
+
 
 if __name__ == '__main__':
     unittest.main()

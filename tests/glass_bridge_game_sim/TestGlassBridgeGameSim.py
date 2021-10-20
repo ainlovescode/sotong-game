@@ -2,6 +2,7 @@ import io
 import unittest
 from unittest import mock
 
+
 from sotonggame.glass_bridge_game_sim.GlassBridgeGameSim import GlassBridgeGameSim
 
 
@@ -31,19 +32,20 @@ class TestGlassBridgeGameSim(unittest.TestCase):
         mock_break_panel.assert_called()
         self.assertEqual(glass_bridge_game_sim.survivals[0], 0)
 
-    def test_calculate_player_survival(self):
-        glass_bridge_game_sim = GlassBridgeGameSim(num_of_itr=5)
+    def test_calculate_all_player_survival(self):
+        expected_chances = [0.8, 0.4, 0.6]
 
+        glass_bridge_game_sim = GlassBridgeGameSim(num_of_players=3, num_of_itr=5)
         glass_bridge_game_sim.survivals = [4, 2, 3]
 
-        self.assertEqual(0.8, glass_bridge_game_sim.calculate_player_survival(0))
-        self.assertEqual(0.4, glass_bridge_game_sim.calculate_player_survival(1))
-        self.assertEqual(0.6, glass_bridge_game_sim.calculate_player_survival(2))
+        glass_bridge_game_sim.calculate_all_player_survival()
+
+        self.assertEqual(expected_chances, glass_bridge_game_sim.chances)
 
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_print_player_survival(self, mock_stdout):
-        glass_bridge_game_sim = GlassBridgeGameSim(num_of_itr=5)
-        glass_bridge_game_sim.survivals = [4, 2, 3]
+        glass_bridge_game_sim = GlassBridgeGameSim(num_of_players=3, num_of_itr=5)
+        glass_bridge_game_sim.chances = [0.8, 0.4, 0.6]
         expected_player_1_output = "Player 1 has a 80.0% chance of survival."
         expected_player_2_output = "Player 2 has a 40.0% chance of survival."
         expected_player_3_output = "Player 3 has a 60.0% chance of survival."
@@ -70,6 +72,41 @@ class TestGlassBridgeGameSim(unittest.TestCase):
         glass_bridge_game_sim.run_sim()
 
         mock_break_panel.assert_called()
+
+    def test_sim_results_are_prepared(self):
+        expected_results = {
+            "num_of_players": 1,
+            "num_of_steps": 3,
+            "player_memory": 2,
+            "chances": mock.ANY
+        }
+
+        glass_bridge_game_sim = GlassBridgeGameSim(num_of_players=1,
+                                                   num_of_steps=3,
+                                                   num_of_itr=1,
+                                                   player_memory=2)
+
+        glass_bridge_game_sim.run_sim()
+
+        self.assertEqual(expected_results, glass_bridge_game_sim.prepare_results())
+
+    @mock.patch('sotonggame.glass_bridge_game_sim.GlassBridgeGameSim.GlassBridgeGameSim.save_results')
+    def test_sim_results_are_saved(self, mock_save_results):
+        t_results = {
+            "num_of_players": 1,
+            "num_of_steps": 3,
+            "player_memory": 2,
+            "chances": mock.ANY
+        }
+
+        glass_bridge_game_sim = GlassBridgeGameSim(num_of_players=1,
+                                                   num_of_steps=3,
+                                                   num_of_itr=1,
+                                                   player_memory=2)
+
+        glass_bridge_game_sim.run_sim()
+
+        mock_save_results.assert_called_with(t_results)
 
 
 if __name__ == '__main__':
